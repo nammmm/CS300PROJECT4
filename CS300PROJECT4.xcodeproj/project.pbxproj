@@ -10,6 +10,7 @@
 		7A2D8E911BFFA88A00119053 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D8E901BFFA88A00119053 /* main.cpp */; };
 		7A2D8E991BFFA89A00119053 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E971BFFA89A00119053 /* GLUT.framework */; };
 		7A2D8E9A1BFFA89A00119053 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E981BFFA89A00119053 /* OpenGL.framework */; };
+		C58D95C81C0E926B009C0854 /* FractalTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C58D95C61C0E926B009C0854 /* FractalTerrain.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,9 @@
 		7A2D8E901BFFA88A00119053 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7A2D8E971BFFA89A00119053 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		7A2D8E981BFFA89A00119053 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		C58D95C61C0E926B009C0854 /* FractalTerrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FractalTerrain.cpp; sourceTree = "<group>"; };
+		C58D95C71C0E926B009C0854 /* Terrain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Terrain.hpp; sourceTree = "<group>"; };
+		C58D95C91C0E9AF1009C0854 /* FractalTerrain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FractalTerrain.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,9 @@
 			isa = PBXGroup;
 			children = (
 				7A2D8E901BFFA88A00119053 /* main.cpp */,
+				C58D95C61C0E926B009C0854 /* FractalTerrain.cpp */,
+				C58D95C91C0E9AF1009C0854 /* FractalTerrain.h */,
+				C58D95C71C0E926B009C0854 /* Terrain.hpp */,
 			);
 			path = CS300PROJECT4;
 			sourceTree = "<group>";
@@ -127,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A2D8E911BFFA88A00119053 /* main.cpp in Sources */,
+				C58D95C81C0E926B009C0854 /* FractalTerrain.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +255,7 @@
 				7A2D8E961BFFA88A00119053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
