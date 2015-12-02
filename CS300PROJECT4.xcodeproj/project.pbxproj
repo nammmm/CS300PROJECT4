@@ -10,6 +10,7 @@
 		7A2D8E911BFFA88A00119053 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D8E901BFFA88A00119053 /* main.cpp */; };
 		7A2D8E991BFFA89A00119053 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E971BFFA89A00119053 /* GLUT.framework */; };
 		7A2D8E9A1BFFA89A00119053 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E981BFFA89A00119053 /* OpenGL.framework */; };
+		7A992E861C0E98CB00C96F87 /* Triple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A992E851C0E98CB00C96F87 /* Triple.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		7A2D8E901BFFA88A00119053 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7A2D8E971BFFA89A00119053 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		7A2D8E981BFFA89A00119053 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		7A992E851C0E98CB00C96F87 /* Triple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triple.cpp; sourceTree = "<group>"; };
+		7A992E871C0E98DB00C96F87 /* Triple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triple.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				7A2D8E901BFFA88A00119053 /* main.cpp */,
+				7A992E851C0E98CB00C96F87 /* Triple.cpp */,
+				7A992E871C0E98DB00C96F87 /* Triple.h */,
 			);
 			path = CS300PROJECT4;
 			sourceTree = "<group>";
@@ -127,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A2D8E911BFFA88A00119053 /* main.cpp in Sources */,
+				7A992E861C0E98CB00C96F87 /* Triple.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +253,7 @@
 				7A2D8E961BFFA88A00119053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
