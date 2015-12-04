@@ -10,6 +10,8 @@
 		7A2D8E911BFFA88A00119053 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D8E901BFFA88A00119053 /* main.cpp */; };
 		7A2D8E991BFFA89A00119053 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E971BFFA89A00119053 /* GLUT.framework */; };
 		7A2D8E9A1BFFA89A00119053 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E981BFFA89A00119053 /* OpenGL.framework */; };
+		96E4EAC31C0E925D003EE361 /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96E4EAC21C0E925D003EE361 /* Triangle.cpp */; };
+		96E4EAC51C0E92B9003EE361 /* RGB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96E4EAC41C0E92B9003EE361 /* RGB.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,10 @@
 		7A2D8E901BFFA88A00119053 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7A2D8E971BFFA89A00119053 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		7A2D8E981BFFA89A00119053 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		96E4EAC21C0E925D003EE361 /* Triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cpp; sourceTree = "<group>"; };
+		96E4EAC41C0E92B9003EE361 /* RGB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RGB.cpp; sourceTree = "<group>"; };
+		96E4EAC61C0E94AC003EE361 /* Triangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triangle.h; sourceTree = "<group>"; };
+		96E4EAC71C0E94C2003EE361 /* RGB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RGB.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +72,10 @@
 			isa = PBXGroup;
 			children = (
 				7A2D8E901BFFA88A00119053 /* main.cpp */,
+				96E4EAC21C0E925D003EE361 /* Triangle.cpp */,
+				96E4EAC61C0E94AC003EE361 /* Triangle.h */,
+				96E4EAC41C0E92B9003EE361 /* RGB.cpp */,
+				96E4EAC71C0E94C2003EE361 /* RGB.h */,
 			);
 			path = CS300PROJECT4;
 			sourceTree = "<group>";
@@ -126,7 +136,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96E4EAC51C0E92B9003EE361 /* RGB.cpp in Sources */,
 				7A2D8E911BFFA88A00119053 /* main.cpp in Sources */,
+				96E4EAC31C0E925D003EE361 /* Triangle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +259,7 @@
 				7A2D8E961BFFA88A00119053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
