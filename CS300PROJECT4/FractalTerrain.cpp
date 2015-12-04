@@ -8,12 +8,15 @@
 
 #include "Terrain.hpp"
 #include <stdio.h>
-#include <Terrain.hpp>
+#include "Terrain.hpp"
 #include <stdlib.h>
 #include <cmath>
 class FractalTerrain : Terrain{
 private:
     double** terrain;
+    RGB blue = *new RGB(0.0, 0.0, 1.0);
+    RGB green = *new RGB(0.0, 1.0, 0.0);
+    RGB white = *new RGB(1.0, 1.0, 1.0);
     double roughnesss, min, max;
     int divisions;
     void diamond(int x, int y, int side, double scale)

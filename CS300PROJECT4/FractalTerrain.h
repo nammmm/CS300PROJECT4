@@ -14,14 +14,14 @@ private:
     double** terrain;
     double roughnesss, min, max;
     int divisions;
-    void diamond(int x, int y, int side, double scale){};
-    void square(int x, int y, int side, double scale){};
-    double rnd(){};
+    void diamond(int x, int y, int side, double scale);
+    void square(int x, int y, int side, double scale);
+    double rnd();
 public:
-    FractalTerrain(int lod, double roughness){}
+    FractalTerrain(int lod, double roughness);
     
-    double getAltitude(double i, double j){}
+    double getAltitude(double i, double j);
     
-    RGB getColor (double i, double j) {}
+    RGB getColor(double i, double j)
 };
 #endif /* FractalTerrain_h */
