@@ -9,17 +9,10 @@
 #include "Terrain.hpp"
 #include <stdio.h>
 #include "Terrain.hpp"
+#include "FractalTerrain.h"
 #include <stdlib.h>
 #include <cmath>
-class FractalTerrain : Terrain{
-private:
-    double** terrain;
-    RGB blue = *new RGB(0.0, 0.0, 1.0);
-    RGB green = *new RGB(0.0, 1.0, 0.0);
-    RGB white = *new RGB(1.0, 1.0, 1.0);
-    double roughnesss, min, max;
-    int divisions;
-    void diamond(int x, int y, int side, double scale)
+    void FractalTerrain::diamond(int x, int y, int side, double scale)
     {
         if (side > 1)
         {
@@ -28,7 +21,7 @@ private:
             terrain[x+half][y+half] = avg + rand() * scale;
         }
     }
-    void square(int x, int y, int side, double scale)
+    void FractalTerrain::square(int x, int y, int side, double scale)
     {
         int half = side / 2;
         double avg = 0.0, sum = 0.0;
@@ -54,12 +47,11 @@ private:
             terrain[x + half][y + half] = avg / sum + rnd() * scale;
         }
     }
-    double rnd()
+    double FractalTerrain::rnd()
     {
         return 2. * rand() - 1.0;
     }
-public:
-    FractalTerrain(int lod, double roughness)
+    FractalTerrain::FractalTerrain(int lod, double roughness)
     {
         roughness = roughness;
         divisions = 1 << lod;
@@ -92,13 +84,13 @@ public:
                 else if (terrain[i][j] > max) max = terrain[i][j];
     }
     
-    double getAltitude(double i, double j)
+    double FractalTerrain::getAltitude(double i, double j)
     {
         double alt = terrain[(int) (i * divisions)][(int) (j * divisions)];
         return (alt - min) / (max - min);
     }
     
-    RGB getColor (double i, double j) {
+    RGB FractalTerrain::getColor (double i, double j) {
         double a = getAltitude (i, j);
         if (a < .5)
             return blue.add (green.subtract (blue).scale ((a - 0.0) / 0.5));
