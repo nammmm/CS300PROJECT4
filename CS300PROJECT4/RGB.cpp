@@ -28,11 +28,11 @@ RGB RGB::scale (double scale){
         return RGB (r * scale, g * scale, b * scale);
 }
 
-int toInt (double value){
+int RGB::toInt (double value){
     return (value < 0.0) ? 0 : (value > 1.0) ? 255 : (int) (value * 255.0);
 }
 
-int toRGB (){
+int RGB::toRGB (){
         return (0xff << 24) | (toInt (r) << 16) | (toInt (g) << 8) | toInt (b);
 }
 
