@@ -11,6 +11,8 @@
 		7A2D8E991BFFA89A00119053 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E971BFFA89A00119053 /* GLUT.framework */; };
 		7A2D8E9A1BFFA89A00119053 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2D8E981BFFA89A00119053 /* OpenGL.framework */; };
 		7A8C35C31C1131A7006AEE70 /* FractalTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C35C01C1131A7006AEE70 /* FractalTerrain.cpp */; };
+		7A8C35C51C113203006AEE70 /* RGB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C35C41C113203006AEE70 /* RGB.cpp */; };
+		7A8C35C81C1132A1006AEE70 /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C35C71C1132A1006AEE70 /* Triangle.cpp */; };
 		7A992E861C0E98CB00C96F87 /* Triple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A992E851C0E98CB00C96F87 /* Triple.cpp */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +36,10 @@
 		7A8C35C01C1131A7006AEE70 /* FractalTerrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FractalTerrain.cpp; sourceTree = "<group>"; };
 		7A8C35C11C1131A7006AEE70 /* FractalTerrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FractalTerrain.h; sourceTree = "<group>"; };
 		7A8C35C21C1131A7006AEE70 /* Terrain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Terrain.hpp; sourceTree = "<group>"; };
+		7A8C35C41C113203006AEE70 /* RGB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RGB.cpp; sourceTree = "<group>"; };
+		7A8C35C61C113278006AEE70 /* RGB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RGB.h; sourceTree = "<group>"; };
+		7A8C35C71C1132A1006AEE70 /* Triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cpp; sourceTree = "<group>"; };
+		7A8C35C91C1132AA006AEE70 /* Triangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triangle.h; sourceTree = "<group>"; };
 		7A992E851C0E98CB00C96F87 /* Triple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triple.cpp; sourceTree = "<group>"; };
 		7A992E871C0E98DB00C96F87 /* Triple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triple.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,11 +79,15 @@
 			isa = PBXGroup;
 			children = (
 				7A2D8E901BFFA88A00119053 /* main.cpp */,
+				7A8C35C41C113203006AEE70 /* RGB.cpp */,
 				7A8C35C01C1131A7006AEE70 /* FractalTerrain.cpp */,
 				7A8C35C11C1131A7006AEE70 /* FractalTerrain.h */,
 				7A8C35C21C1131A7006AEE70 /* Terrain.hpp */,
 				7A992E851C0E98CB00C96F87 /* Triple.cpp */,
 				7A992E871C0E98DB00C96F87 /* Triple.h */,
+				7A8C35C61C113278006AEE70 /* RGB.h */,
+				7A8C35C71C1132A1006AEE70 /* Triangle.cpp */,
+				7A8C35C91C1132AA006AEE70 /* Triangle.h */,
 			);
 			path = CS300PROJECT4;
 			sourceTree = "<group>";
@@ -141,6 +151,8 @@
 				7A8C35C31C1131A7006AEE70 /* FractalTerrain.cpp in Sources */,
 				7A2D8E911BFFA88A00119053 /* main.cpp in Sources */,
 				7A992E861C0E98CB00C96F87 /* Triple.cpp in Sources */,
+				7A8C35C81C1132A1006AEE70 /* Triangle.cpp in Sources */,
+				7A8C35C51C113203006AEE70 /* RGB.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
