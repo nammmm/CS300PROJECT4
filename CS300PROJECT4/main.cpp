@@ -34,24 +34,36 @@ void keyboard (unsigned char key, int x, int y);
 void arrowkeys(int key, int x, int y);
 void constructTerrainGrid();
 void constructTriangles();
+void surfaceNormal();
 //----------------------
 // Global variables
 //----------------------
+const GLfloat PI = 3.1415926535f;
 const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
 FractalTerrain terrain = FractalTerrain(5, 0.5);
 vector<Triangle> triangles;
-vector<vector<Triple>> map;
+vector< vector<Triple> > map;
+vector< vector<RGB> > colors;
 int lod = 5;
 int steps = 1 << lod;
 
+// Normal and lighting
+double ambient = .3;
+double diffuse = 4.0;
+vector< vector<Triple> > normals;
+const GLfloat sun[] = { 3.6f, 3.9f, 0.6f, 1.0 };
+
 // Rotation of the object
 static GLfloat rotate_x = 0.0, rotate_y = 0.0;
-
 float trans_x = 0;
 float trans_y = 0;
 float trans_z = 0;
 
+//Translation of the object
+static GLfloat angle = -150;   /* in degrees */
+static GLfloat angle2 = 30;   /* in degrees */
+static int moving = 0, startx=0, starty=0;
 
 void constructTerrainGrid()
 {
@@ -59,7 +71,6 @@ void constructTerrainGrid()
     
     for (size_t i = 0; i < steps + 1; i++)
         map[i].resize(steps + 1);
-    vector<vector<RGB>> colors;
     for (int i = 0; i < steps + 1; i++)
         colors[i].resize(steps+1);
     for (int i = 0; i <= steps; ++ i) {
@@ -71,8 +82,6 @@ void constructTerrainGrid()
         }
     }
 }
-
-//Translation of the object
 
 void constructTriangles()
 {
@@ -87,12 +96,52 @@ void constructTriangles()
     }
 }
 
-#define PI 3.14159
-
-static GLfloat angle = -150;   /* in degrees */
-static GLfloat angle2 = 30;   /* in degrees */
-
-static int moving = 0, startx=0, starty=0;
+void surfaceNormal()
+{
+    // Initialize every vector on every vertex to be (0,0,0)
+    for (int i = 0; i < triangles.size(); ++i)
+    {
+        vector<Triple> vertices;
+        for (int j = 0; j < 3; ++j)
+        {
+            Triple vect = Triple(0.0, 0.0, 0.0);
+            vertices.push_back(vect);
+        }
+        normals.push_back(vertices);
+    }
+    /* compute triangle normals and vertex averaged normals */
+    for (int i = 0; i < triangles.size(); ++i)
+    {
+        Triple v0 = map[triangles[i].getVertex(0).at(0)][triangles[i].getVertex(0).at(1)],
+        v1 = map[triangles[i].getVertex(1).at(0)][triangles[i].getVertex(1).at(1)],
+        v2 = map[triangles[i].getVertex(2).at(0)][triangles[i].getVertex(2).at(1)];
+        Triple normal = v0.subtract (v1).cross (v2.subtract (v1)).normalize ();
+        triangles[i].setNormal(normal);
+        for (int j = 0; j < 3; ++j) {
+            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)] =
+            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)].add (normal);
+        }
+    }
+    /* compute vertex colors and triangle average colors */
+    Triple sunVect = Triple(sun[0], sun[1], sun[2]);
+    for (int i = 0; i < triangles.size(); ++i) {
+        RGB avg = RGB (0.0, 0.0, 0.0);
+        for (int j = 0; j < 3; ++j) {
+            int k = triangles[i].getVertex(j).at(0), l = triangles[i].getVertex(j).at(1);
+            Triple vertex = map[k][l];
+            RGB color = colors[k][l];
+            Triple normal = normals[k][l].normalize();
+            Triple light = vertex.subtract(sunVect);
+            double distance2 = light.length2();
+            double dot = light.normalize().dot(normal);
+            double lighting = ambient + diffuse * ((dot < 0.0) ? - dot : 0.0) / distance2;
+            color = color.scale(lighting);
+            triangles[i].getColor().at(j) = color;
+            avg = avg.add(color);
+        }
+        triangles[i].getAvgColor() = avg.scale(1.0 / 3.0);
+    }
+}
 
 // Initialize OpenGL graphics
 void init(void)
@@ -103,23 +152,11 @@ void init(void)
     glOrtho (-12.0, 12.0, -12.0,
              12.0, -12.0, 12.0);
     
-    glEnable(GL_DEPTH_TEST);
+    // Initialize the light.
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
-    GLfloat cyan[] = { 0.0, 1.0, 1.0, 1.0 };
-    GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat direction[] = { 1.0, 1.0, 0.0, 0.0 };
-    
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cyan);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    glMaterialf(GL_FRONT, GL_SHININESS, 10);
-    
-    glLightfv(GL_LIGHT0, GL_AMBIENT, black);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-    glLightfv(GL_LIGHT0, GL_POSITION, direction);
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, sun);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, sun);
     
     constructTerrainGrid();
     constructTriangles();

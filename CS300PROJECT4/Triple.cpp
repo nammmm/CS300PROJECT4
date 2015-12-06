@@ -31,14 +31,14 @@ Triple Triple::cross(Triple t)
     return Triple(y * t.z - z * t.y, z * t.x - x * t.z, x * t.y - y * t.x);
 }
 
-double Triple::dot(Triple* t)
+double Triple::dot(Triple t)
 {
-    return x * t->x + y * t->y + z * t->z;
+    return x * t.x + y * t.y + z * t.z;
 }
 
 double Triple::length2()
 {
-    return dot(this);
+    return dot(*this);
 }
 
 Triple Triple::normalize()
