@@ -37,4 +37,16 @@ int RGB::toRGB (){
 }
 
 
+double RGB::getRed()
+{
+    return r;
+}
+double RGB::getGreen()
+{
+    return g;
+}
+double RGB::getBlue()
+{
+    return b;
+}
 

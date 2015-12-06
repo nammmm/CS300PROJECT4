@@ -44,3 +44,13 @@ void Triangle::setNormal(Triple norm)
 {
     n = norm;
 }
+
+vector<double> Triangle::getVertex(int num)
+{
+    vector<double> buf;
+    buf.resize(3);
+    buf[0] = i[num];
+    buf[1] = 0;
+    buf[2] = j[num];
+    return buf;
+}

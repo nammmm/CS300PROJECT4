@@ -32,6 +32,8 @@ public:
     Triple getNormal();
     
     void setNormal(Triple norm);
+    
+    vector<double> getVertex(int num);
 };
 
 #endif /* Triangle_h */

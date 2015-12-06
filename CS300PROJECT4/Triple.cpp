@@ -50,3 +50,8 @@ Triple Triple::scale(double scale)
 {
     return Triple(x * scale, y * scale, z * scale);
 }
+
+double Triple::getHeight()
+{
+    return y;
+}

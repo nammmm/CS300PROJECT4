@@ -45,6 +45,14 @@ vector<vector<Triple>> map;
 int lod = 5;
 int steps = 1 << lod;
 
+// Rotation of the object
+static GLfloat rotate_x = 0.0, rotate_y = 0.0;
+
+float trans_x = 0;
+float trans_y = 0;
+float trans_z = 0;
+
+
 void constructTerrainGrid()
 {
     double exaggeration = .7;
@@ -64,6 +72,8 @@ void constructTerrainGrid()
     }
 }
 
+//Translation of the object
+
 void constructTriangles()
 {
     int numTriangles = (steps * steps * 2);
@@ -76,14 +86,6 @@ void constructTriangles()
         }
     }
 }
-
-// Rotation of the object
-static GLfloat rotate_x = 0.0, rotate_y = 0.0;
-
-//Translation of the object
-float trans_x = 0;
-float trans_y = 0;
-float trans_z = 0;
 
 #define PI 3.14159
 
@@ -101,7 +103,24 @@ void init(void)
     glOrtho (-12.0, 12.0, -12.0,
              12.0, -12.0, 12.0);
     
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat cyan[] = { 0.0, 1.0, 1.0, 1.0 };
+    GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat direction[] = { 1.0, 1.0, 0.0, 0.0 };
+    
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cyan);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+    glMaterialf(GL_FRONT, GL_SHININESS, 10);
+    
+    glLightfv(GL_LIGHT0, GL_AMBIENT, black);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+    glLightfv(GL_LIGHT0, GL_POSITION, direction);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+    
     constructTerrainGrid();
     constructTriangles();
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
@@ -115,8 +134,26 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
+    glTranslatef(trans_x, trans_y, trans_z);
+    glRotatef(rotate_x, 1.0, 0.0, 0.0 );
+    glRotatef(rotate_y, 0.0, 1.0, 0.0);
     
+    glRotatef(angle2, 1.0, 0.0, 0.0);
+    glRotatef(angle, 0.0, 1.0, 0.0);
     
+    glColor3f(0, 1, 0);
+    Triangle* buf;
+    glBegin(GL_TRIANGLES);
+    for (int i = 0; i < steps; i++)
+        for (int j = 0; j < steps; j++)
+        {
+            buf = &triangles[i*steps + j];
+            glColor3f(buf->getColor()[0].getRed(), buf->getColor()[0].getGreen(), buf->getColor()[0].getBlue());
+            vector<double> vertex = buf->getVertex(0);
+            vertex[1] = map[i][j].getHeight();
+            glVertex3f(vertex[0], vertex[1], vertex[2]);
+        }
+    glEnd();
     glutSwapBuffers();
 }
 
