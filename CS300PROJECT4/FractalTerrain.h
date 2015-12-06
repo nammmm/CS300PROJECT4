@@ -26,7 +26,7 @@ private:
 public:
     FractalTerrain(int lod, double roughness);
     
-    float getAltitude(int i, int j);
+    double getAltitude(double i, double j);
     
     RGB getColor(double i, double j);
 };

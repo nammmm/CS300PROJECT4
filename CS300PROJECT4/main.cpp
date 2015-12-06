@@ -21,6 +21,7 @@
 #include "RGB.h"
 #include "Triangle.h"
 #include <iostream>
+#include <vector>
 
 //----------------------
 // Function prototypes
@@ -31,14 +32,50 @@ void reshape(int w, int h);
 void idle(void);
 void keyboard (unsigned char key, int x, int y);
 void arrowkeys(int key, int x, int y);
-
+void constructTerrainGrid();
+void constructTriangles();
 //----------------------
 // Global variables
 //----------------------
 const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
 FractalTerrain terrain = FractalTerrain(5, 0.5);
+vector<Triangle> triangles;
+int lod = 5;
+int steps = 1 << lod;
 
+void constructTerrainGrid()
+{
+    double exaggeration = .7;
+    
+    vector<vector<Triple>> map;
+    for (size_t i = 0; i < steps + 1; i++)
+        map[i].resize(steps + 1);
+    vector<vector<RGB>> colors;
+    for (int i = 0; i < steps + 1; i++)
+        colors[i].resize(steps+1);
+    for (int i = 0; i <= steps; ++ i) {
+        for (int j = 0; j <= steps; ++ j) {
+            double x = 1.0 * i / steps, z = 1.0 * j / steps;
+            double altitude = terrain.getAltitude (x, z);
+            map[i][j] = Triple(x, altitude * exaggeration, z);
+            colors[i][j] = terrain.getColor (x, z);
+        }
+    }
+}
+
+void constructTriangles()
+{
+    int numTriangles = (steps * steps * 2);
+    triangles.resize(numTriangles);
+    int triangle = 0;
+    for (int i = 0; i < steps; ++ i) {
+        for (int j = 0; j < steps; ++ j) {
+            triangles[triangle ++] = Triangle (i, j, i + 1, j, i, j + 1);
+            triangles[triangle ++] = Triangle (i + 1, j, i + 1, j + 1, i, j + 1);
+        }
+    }
+}
 // Initialize OpenGL graphics
 void init(void)
 {
@@ -48,8 +85,8 @@ void init(void)
     glOrtho (-12.0, 12.0, -12.0,
              12.0, -12.0, 12.0);
     
-    
-    
+    constructTerrainGrid();
+    constructTriangles();
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
     glEnable(GL_DEPTH_TEST);
 }
@@ -61,18 +98,6 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    glColor3f(0, 1, 0);
-    glBegin(GL_POINTS);
-    int counter = 0;
-    for (int i = 0; i < 32; i++)
-        for (int j = 0; j < 32; j++)
-        {
-            glVertex3f(i, (float)terrain.getAltitude(i, j), j);
-            counter++;
-        }
-    
-    glEnd();
-    std::cout << counter;
     glutSwapBuffers();
 }
 

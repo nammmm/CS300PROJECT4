@@ -86,9 +86,9 @@ FractalTerrain::FractalTerrain(int lod, double roughness)
             else if (terrain[i][j] > max) max = terrain[i][j];
 }
 
-float FractalTerrain::getAltitude(int i, int j)
+double FractalTerrain::getAltitude(double i, double j)
 {
-    float alt = terrain[i][j];
+    double alt = terrain[(int)i * divisions][(int)j * divisions];
     return (alt - min) / (max - min);
 }
 

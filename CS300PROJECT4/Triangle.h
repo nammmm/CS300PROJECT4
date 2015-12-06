@@ -17,7 +17,7 @@ class Triangle{
 private:
     int i[3], j[3];
     Triple n = Triple(0, 0, 0);
-    vector<RGB>* color;
+    vector<RGB> color;
 public:
     Triangle (int i0, int j0, int i1, int j1, int i2, int j2);
 };
