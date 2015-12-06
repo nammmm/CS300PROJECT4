@@ -14,3 +14,32 @@ Triangle::Triangle (int i0, int j0, int i1, int j1, int i2, int j2) {
     j[1] = j1;
     j[2] = j2;
 }
+vector<RGB> Triangle::getColor()
+{
+    return color;
+}
+
+void Triangle::setColor(vector<RGB> c)
+{
+    color = c;
+}
+
+RGB Triangle::getAvgColor()
+{
+    return avgColor;
+}
+
+void Triangle::setAvgColor(RGB c)
+{
+    avgColor = c;
+}
+
+Triple Triangle::getNormal()
+{
+    return n;
+}
+
+void Triangle::setNormal(Triple norm)
+{
+    n = norm;
+}
