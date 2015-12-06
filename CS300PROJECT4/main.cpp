@@ -162,6 +162,7 @@ void init(void)
     
     constructTerrainGrid();
     constructTriangles();
+    surfaceNormal();
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
     glEnable(GL_DEPTH_TEST);
 }
