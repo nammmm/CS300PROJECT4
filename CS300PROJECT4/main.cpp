@@ -41,6 +41,7 @@ const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
 FractalTerrain terrain = FractalTerrain(5, 0.5);
 vector<Triangle> triangles;
+vector<vector<Triple>> map;
 int lod = 5;
 int steps = 1 << lod;
 
@@ -48,7 +49,6 @@ void constructTerrainGrid()
 {
     double exaggeration = .7;
     
-    vector<vector<Triple>> map;
     for (size_t i = 0; i < steps + 1; i++)
         map[i].resize(steps + 1);
     vector<vector<RGB>> colors;
@@ -76,6 +76,7 @@ void constructTriangles()
         }
     }
 }
+
 // Initialize OpenGL graphics
 void init(void)
 {
@@ -85,6 +86,7 @@ void init(void)
     glOrtho (-12.0, 12.0, -12.0,
              12.0, -12.0, 12.0);
     
+    glEnable(GL_LIGHT0);
     constructTerrainGrid();
     constructTriangles();
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
@@ -97,6 +99,8 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    
     
     glutSwapBuffers();
 }
