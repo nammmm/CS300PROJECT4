@@ -40,10 +40,12 @@ void constructTriangles();
 const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
 FractalTerrain terrain = FractalTerrain(5, 0.5);
-vector<Triangle> triangles;
-vector<vector<Triple>> map;
+
 int lod = 5;
 int steps = 1 << lod;
+vector<Triangle> triangles(steps * steps * 2);
+vector<vector<Triple>> map(steps+1);
+vector<vector<RGB>> colors(steps+1);
 
 // Rotation of the object
 static GLfloat rotate_x = 0.0, rotate_y = 0.0;
@@ -57,9 +59,9 @@ void constructTerrainGrid()
 {
     double exaggeration = .7;
     
-    for (size_t i = 0; i < steps + 1; i++)
+    for (int i = 0; i < steps + 1; i++)
         map[i].resize(steps + 1);
-    vector<vector<RGB>> colors;
+
     for (int i = 0; i < steps + 1; i++)
         colors[i].resize(steps+1);
     for (int i = 0; i <= steps; ++ i) {
@@ -143,13 +145,24 @@ void display(void)
     
     glColor3f(0, 1, 0);
     Triangle* buf;
+    vector<double> vertex;
     glBegin(GL_TRIANGLES);
     for (int i = 0; i < steps; i++)
         for (int j = 0; j < steps; j++)
         {
             buf = &triangles[i*steps + j];
             glColor3f(buf->getColor()[0].getRed(), buf->getColor()[0].getGreen(), buf->getColor()[0].getBlue());
-            vector<double> vertex = buf->getVertex(0);
+            vertex = buf->getVertex(0);
+            vertex[1] = map[vertex[0]][vertex[2]].getHeight();
+            glVertex3f(vertex[0], vertex[1], vertex[2]);
+            
+            glColor3f(buf->getColor()[1].getRed(), buf->getColor()[1].getGreen(), buf->getColor()[1].getBlue());
+            vertex = buf->getVertex(1);
+            vertex[1] = map[i][j].getHeight();
+            glVertex3f(vertex[0], vertex[1], vertex[2]);
+            
+            glColor3f(buf->getColor()[2].getRed(), buf->getColor()[2].getGreen(), buf->getColor()[2].getBlue());
+            vertex = buf->getVertex(2);
             vertex[1] = map[i][j].getHeight();
             glVertex3f(vertex[0], vertex[1], vertex[2]);
         }

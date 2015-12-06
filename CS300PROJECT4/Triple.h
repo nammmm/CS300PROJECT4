@@ -13,7 +13,7 @@ class Triple
 {
 public:
     Triple(double x, double y, double z);
-    
+    Triple();
     Triple add(Triple t);
     Triple subtract(Triple t);
     Triple cross(Triple t);

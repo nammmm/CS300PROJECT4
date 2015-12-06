@@ -16,6 +16,8 @@ Triple::Triple(double x, double y, double z)
     this->z = z;
 }
 
+Triple::Triple(){};
+
 Triple Triple::add(Triple t)
 {
     return Triple(x + t.x, y + t.y, z + t.z);

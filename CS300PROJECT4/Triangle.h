@@ -21,7 +21,7 @@ private:
     RGB avgColor = RGB(0, 0, 0);
 public:
     Triangle (int i0, int j0, int i1, int j1, int i2, int j2);
-    
+    Triangle ();
     vector<RGB> getColor();
     
     void setColor(vector<RGB> c);

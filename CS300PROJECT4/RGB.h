@@ -12,6 +12,7 @@
 class RGB{
 public:
     RGB (double r, double g, double b);
+    RGB();
     double getRed();
     double getGreen();
     double getBlue();

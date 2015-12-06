@@ -16,6 +16,7 @@ RGB::RGB (double r, double g, double b){
         this->b = b;
 }
 
+RGB::RGB(){};
 RGB RGB::add(RGB rgb){
         return RGB (r + rgb.r, g + rgb.g, b + rgb.b);
 }
