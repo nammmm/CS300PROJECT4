@@ -17,7 +17,7 @@ public:
     Triple add(Triple t);
     Triple subtract(Triple t);
     Triple cross(Triple t);
-    double dot(Triple* t);
+    double dot(Triple t);
     double length2();
     Triple normalize();
     Triple scale(double scale);
