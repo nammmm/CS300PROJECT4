@@ -77,6 +77,21 @@ void constructTriangles()
     }
 }
 
+// Rotation of the object
+static GLfloat rotate_x = 0.0, rotate_y = 0.0;
+
+//Translation of the object
+float trans_x = 0;
+float trans_y = 0;
+float trans_z = 0;
+
+#define PI 3.14159
+
+static GLfloat angle = -150;   /* in degrees */
+static GLfloat angle2 = 30;   /* in degrees */
+
+static int moving = 0, startx=0, starty=0;
+
 // Initialize OpenGL graphics
 void init(void)
 {
@@ -103,6 +118,35 @@ void display(void)
     
     
     glutSwapBuffers();
+}
+
+static void
+mouse(int button, int state, int x, int y)
+{
+    /* Rotate the scene with the left mouse button. */
+    if (button == GLUT_LEFT_BUTTON) {
+        if (state == GLUT_DOWN) {
+            moving = 1;
+            startx = x;
+            starty = y;
+        }
+        if (state == GLUT_UP) {
+            moving = 0;
+        }
+    }
+}
+
+/* ARGSUSED1 */
+static void
+motion(int x, int y)
+{
+    if (moving) {
+        angle = (angle + (x - startx));
+        angle2 = (angle2 + (y - starty));
+        startx = x;
+        starty = y;
+        glutPostRedisplay();
+    }
 }
 
 // Reshape
@@ -140,17 +184,20 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-// Special keys
-void arrowkeys(int key, int x, int y)
+// arrow keys that are used to control the rotation of the object
+void specialKeys( int key, int x, int y )
 {
-    switch (key) {
-        case GLUT_KEY_RIGHT:
-            break;
-        default:
-            break;
-    }
+    if (key == GLUT_KEY_RIGHT)
+        rotate_x -= 5.0;
+    else if (key == GLUT_KEY_LEFT)
+        rotate_x -= -5.0;
+    else if (key == GLUT_KEY_UP)
+        rotate_y += 5.0;
+    else if (key == GLUT_KEY_DOWN)
+        rotate_y -= 5.0;
+    
+    glutPostRedisplay();
 }
-
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
@@ -163,7 +210,9 @@ int main(int argc, char** argv)
     glutReshapeFunc(reshape);
     glutIdleFunc(idle);
     glutKeyboardFunc(keyboard);
-    glutSpecialFunc(arrowkeys);
+    glutSpecialFunc(specialKeys);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
     glutMainLoop();
     return 0;
 }
