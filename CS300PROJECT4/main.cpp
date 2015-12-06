@@ -16,6 +16,11 @@
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #include <cstdlib>
+#include "FractalTerrain.h"
+#include "Triple.h"
+#include "RGB.h"
+#include "Triangle.h"
+#include <iostream>
 
 //----------------------
 // Function prototypes
@@ -32,7 +37,7 @@ void arrowkeys(int key, int x, int y);
 //----------------------
 const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
-
+FractalTerrain terrain = FractalTerrain(5, 0.5);
 
 // Initialize OpenGL graphics
 void init(void)
@@ -42,6 +47,9 @@ void init(void)
     glLoadIdentity();
     glOrtho (-12.0, 12.0, -12.0,
              12.0, -12.0, 12.0);
+    
+    
+    
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
     glEnable(GL_DEPTH_TEST);
 }
@@ -53,8 +61,18 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    // Add code
+    glColor3f(0, 1, 0);
+    glBegin(GL_POINTS);
+    int counter = 0;
+    for (int i = 0; i < 32; i++)
+        for (int j = 0; j < 32; j++)
+        {
+            glVertex3f(i, (float)terrain.getAltitude(i, j), j);
+            counter++;
+        }
     
+    glEnd();
+    std::cout << counter;
     glutSwapBuffers();
 }
 

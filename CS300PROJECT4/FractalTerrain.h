@@ -8,22 +8,25 @@
 
 #ifndef FractalTerrain_h
 #define FractalTerrain_h
+#include "RGB.h"
 
-class FractalTerrain : Terrain{
+class FractalTerrain{
 private:
     double** terrain;
     double roughnesss, min, max;
     int divisions;
-    RGB blue = *new RGB (0.0, 0.0, 1.0);
-    RGB green = *new RGB (0.0, 1.0, 0.0);
-    RGB white = *new RGB (1.0, 1.0, 1.0);
+    RGB blue = RGB (0.0, 0.0, 1.0);
+    RGB green = RGB (0.0, 1.0, 0.0);
+    RGB white = RGB (1.0, 1.0, 1.0);
     void diamond(int x, int y, int side, double scale);
     void square(int x, int y, int side, double scale);
     double rnd();
+    
+    int test;
 public:
     FractalTerrain(int lod, double roughness);
     
-    double getAltitude(double i, double j);
+    float getAltitude(int i, int j);
     
     RGB getColor(double i, double j);
 };
