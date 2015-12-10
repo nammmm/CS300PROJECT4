@@ -12,6 +12,9 @@
 #include "Terrain.hpp"
 #include "FractalTerrain.h"
 #include <stdlib.h>
+#include <random>
+#include <iostream>
+#include <ctime>
 #include <cmath>
 
 void FractalTerrain::diamond(int x, int y, int side, double scale)
@@ -20,7 +23,7 @@ void FractalTerrain::diamond(int x, int y, int side, double scale)
     {
         int half = side/2;
         double avg = (terrain[x][y]+terrain[x+side][y] + terrain[x+side][y+side] + terrain[x][y+side])*0.25;
-        terrain[x+half][y+half] = avg + rand() * scale;
+        terrain[x+half][y+half] = avg + rnd() * scale;
     }
 }
 void FractalTerrain::square(int x, int y, int side, double scale)
@@ -51,7 +54,14 @@ void FractalTerrain::square(int x, int y, int side, double scale)
 }
 double FractalTerrain::rnd()
 {
-    return 2. * (double)rand()/ RAND_MAX - 1.0;
+    std::uniform_real_distribution<double> dist(0.0, 1.0);  //(min, max)
+    
+    //Mersenne Twister: Good quality random number generator
+    std::mt19937 rng;
+    //Initialize with non-deterministic seeds
+    rng.seed(std::random_device{}());
+
+    return 2.0 * rand()/RAND_MAX- 1;
 }
 FractalTerrain::FractalTerrain(int lod, double roughness)
 {
@@ -82,13 +92,16 @@ FractalTerrain::FractalTerrain(int lod, double roughness)
     min = max = terrain[0][0];
     for (int i = 0; i <= divisions; i++)
         for (int j = 0; j <= divisions; j++)
+        {
             if (terrain[i][j] < min) min = terrain[i][j];
             else if (terrain[i][j] > max) max = terrain[i][j];
+            }
+    std::cout << "min: " << min << "max: " << max << '\n';
 }
 
 double FractalTerrain::getAltitude(double i, double j)
 {
-    double alt = terrain[(int)i * divisions][(int)j * divisions];
+    double alt = terrain[(int)(i * divisions)][(int)(j * divisions)];
     return (alt - min) / (max - min);
 }
 

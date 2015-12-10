@@ -79,6 +79,7 @@ void constructTerrainGrid()
         for (int j = 0; j <= steps; ++ j) {
             double x = 1.0 * i / steps, z = 1.0 * j / steps;
             double altitude = terrain.getAltitude (x, z);
+            //cout << i << ' '<< j << ' '<< altitude<< '\n';
             map[i][j] = Triple(x, altitude * exaggeration, z);
             colors[i][j] = terrain.getColor (x, z);
         }
@@ -89,6 +90,7 @@ void constructTriangles()
 {
     int numTriangles = (steps * steps * 2);
     triangles.resize(numTriangles);
+    cout << "Num of Triangles: " << numTriangles << '\n';
     int triangle = 0;
     for (int i = 0; i < steps; ++ i) {
         for (int j = 0; j < steps; ++ j) {
@@ -151,8 +153,8 @@ void init(void)
     glClearColor (0.0, 0.0, 0.0, 0.0);                  // Black
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho (-12.0, 12.0, -12.0,
-             12.0, -12.0, 12.0);
+    glOrtho (-1.0, 1.0, -1.0,
+             1.0, -1.0, 1.0);
     
     // Initialize the light.
     glEnable(GL_LIGHTING);
@@ -163,6 +165,13 @@ void init(void)
     constructTerrainGrid();
     constructTriangles();
     surfaceNormal();
+    
+//    for (int i = 0; i <= steps; ++ i) {
+//        for (int j = 0; j <= steps; ++ j) {
+//            cout << i << ' '<< j << ' '<< map[i][j].getHeight()<< '\n';
+//            
+//        }
+//    }
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
     glEnable(GL_DEPTH_TEST);
 }
@@ -182,27 +191,53 @@ void display(void)
     glRotatef(angle, 0.0, 1.0, 0.0);
     
     glColor3f(0, 1, 0);
-    Triangle* buf;
+    Triangle buf = Triangle();
     vector<double> vertex;
     glBegin(GL_TRIANGLES);
+    int num = 0;
     for (int i = 0; i < steps; i++)
         for (int j = 0; j < steps; j++)
         {
-            buf = &triangles[i*steps + j];
-            glColor3f(buf->getColor()[0].getRed(), buf->getColor()[0].getGreen(), buf->getColor()[0].getBlue());
-            vertex = buf->getVertex(0);
+            buf = triangles[num++];
+            vertex = buf.getVertex(0);
             vertex[1] = map[vertex[0]][vertex[2]].getHeight();
-            glVertex3f(vertex[0], vertex[1], vertex[2]);
+            //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
+            glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
+            glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
             
-            glColor3f(buf->getColor()[1].getRed(), buf->getColor()[1].getGreen(), buf->getColor()[1].getBlue());
-            vertex = buf->getVertex(1);
-            vertex[1] = map[i][j].getHeight();
-            glVertex3f(vertex[0], vertex[1], vertex[2]);
+            vertex = buf.getVertex(1);
+            vertex[1] = map[vertex[0]][vertex[2]].getHeight();
+            //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
+            glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
+            glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
             
-            glColor3f(buf->getColor()[2].getRed(), buf->getColor()[2].getGreen(), buf->getColor()[2].getBlue());
-            vertex = buf->getVertex(2);
-            vertex[1] = map[i][j].getHeight();
-            glVertex3f(vertex[0], vertex[1], vertex[2]);
+            vertex = buf.getVertex(2);
+            vertex[1] = map[vertex[0]][vertex[2]].getHeight();
+            //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
+            glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
+            glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
+            
+            buf = triangles[num++];
+            vertex = buf.getVertex(0);
+            vertex[1] = map[vertex[0]][vertex[2]].getHeight();
+            //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
+            glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
+
+            glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
+            
+            vertex = buf.getVertex(1);
+            vertex[1] = map[vertex[0]][vertex[2]].getHeight();
+            //cout << vertex[0]/steps << ' '<< vertex[1] << ' '<< vertex[2]/steps << '\n';
+            glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
+
+            glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
+            
+            vertex = buf.getVertex(2);
+            vertex[1] = map[vertex[0]][vertex[2]].getHeight();
+            //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
+            glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
+
+            glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
         }
     glEnd();
     glutSwapBuffers();
@@ -244,11 +279,11 @@ void reshape (int w, int h)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
     if (w <= h)
-        glOrtho (-12.0, 12.0, -12.0*(GLfloat)h/(GLfloat)w,
-                 12.0*(GLfloat)h/(GLfloat)w, -12.0, 12.0);
+        glOrtho (-1.0, 1.0, -1.0*(GLfloat)h/(GLfloat)w,
+                 1.0*(GLfloat)h/(GLfloat)w, -1.0, 1.0);
     else
-        glOrtho (-12.0*(GLfloat)w/(GLfloat)h,
-                 12.0*(GLfloat)w/(GLfloat)h, -12.0, 12.0, -12.0, 12.0);
+        glOrtho (-1.0*(GLfloat)w/(GLfloat)h,
+                 1.0*(GLfloat)w/(GLfloat)h, -1.0, 1.0, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glClearColor (0.0, 0.0, 0.0, 0.0);
 }
