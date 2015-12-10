@@ -61,7 +61,7 @@ double FractalTerrain::rnd()
     //Initialize with non-deterministic seeds
     rng.seed(std::random_device{}());
 
-    return 2.0 * rand()/RAND_MAX- 1;
+    return 2.0 * dist(rng)- 1;
 }
 FractalTerrain::FractalTerrain(int lod, double roughness)
 {
