@@ -52,7 +52,7 @@ vector<vector<RGB>> colors(steps+1);
 // Normal and lighting
 double ambient = .3;
 double diffuse = 4.0;
-vector< vector<Triple> > normals;
+vector< vector<Triple> > normals(steps+1);
 const GLfloat sun[] = { 3.6f, 3.9f, 0.6f, 0.0 };
 const GLfloat light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f};
 const GLfloat light_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f};
@@ -106,16 +106,13 @@ void constructTriangles()
 void surfaceNormal()
 {
     // Initialize every vector on every vertex to be (0,0,0)
-    for (int i = 0; i < triangles.size(); ++i)
-    {
-        vector<Triple> vertices;
-        for (int j = 0; j < 3; ++j)
+    for (int i = 0; i < steps+1; i++)
+        normals[i].resize(steps+1);
+    for (int i = 0; i < steps+1; ++i)
+        for (int j = 0; j < steps+1; ++j)
         {
-            Triple vect = Triple(0.0, 0.0, 0.0);
-            vertices.push_back(vect);
+            normals[i][j] = Triple(0.0, 0.0, 0.0);
         }
-        normals.push_back(vertices);
-    }
     /* compute triangle normals and vertex averaged normals */
     for (int i = 0; i < triangles.size(); ++i)
     {
@@ -126,7 +123,7 @@ void surfaceNormal()
         triangles[i].setNormal(normal);
         for (int j = 0; j < 3; ++j) {
             normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)] =
-            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)].add (normal);
+            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)].add(normal);
         }
     }
     /* compute vertex colors and triangle average colors */
