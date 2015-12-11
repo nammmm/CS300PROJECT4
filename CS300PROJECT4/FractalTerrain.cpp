@@ -71,10 +71,10 @@ FractalTerrain::FractalTerrain(int lod, double roughness)
         terrain[i] = new double[divisions+1];
     
 
-    terrain[0][0] = 0.1;
-    terrain[0][divisions] = 0.3;
-    terrain[divisions][divisions] = 0.5;
-    terrain[divisions][0] = 0.8;
+    terrain[0][0] = rnd();
+    terrain[0][divisions] = rnd();
+    terrain[divisions][divisions] = rnd();
+    terrain[divisions][0] = rnd();
     
     double rough = roughness;
     for (int i = 0; i < lod; i++)

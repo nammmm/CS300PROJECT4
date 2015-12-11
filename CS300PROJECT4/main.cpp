@@ -41,7 +41,7 @@ void surfaceNormal();
 const GLfloat PI = 3.1415926535f;
 const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
-FractalTerrain terrain = FractalTerrain(5, 0.5);
+FractalTerrain terrain = FractalTerrain(5, 0.6);
 
 int lod = 5;
 int steps = 1 << lod;
@@ -50,10 +50,14 @@ vector<vector<Triple>> map(steps+1);
 vector<vector<RGB>> colors(steps+1);
 
 // Normal and lighting
-double ambient = .3;
+double ambient = .4;
 double diffuse = 4.0;
 vector< vector<Triple> > normals(steps+1);
-const GLfloat sun[] = { 3.6f, 3.9f, 0.6f, 0.0 };
+const GLfloat sun[] = { -1.2f, -1.3f, -1.4f, 1.0 };
+const GLfloat pos[] = { 0.0, 1, 0, 0};
+const GLfloat pos2[] = { 1.0, 0, 0, 0};
+const GLfloat pos3[] = { 0.0, 0, 1, 0};
+const GLfloat pos4[] = { -1.0, 0, 0, 0};
 const GLfloat light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f};
 const GLfloat light_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f};
 
@@ -168,10 +172,20 @@ void init(void)
     // Initialize the light.
     glEnable(GL_LIGHTING);
     
-    glLightfv(GL_LIGHT0, GL_POSITION, sun);
+    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+    
+    glLightfv(GL_LIGHT1, GL_POSITION, pos2);
+    
+    glLightfv(GL_LIGHT2, GL_POSITION, pos3);
+    
+    glLightfv(GL_LIGHT3, GL_POSITION, pos4);
     //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
+    glEnable(GL_LIGHT3);
     constructTerrainGrid();
     constructTriangles();
     surfaceNormal();
@@ -190,12 +204,13 @@ void display(void)
     glLoadIdentity();
     
     glTranslatef(trans_x, trans_y, trans_z);
+    
     glRotatef(rotate_x, 1.0, 0.0, 0.0 );
     glRotatef(rotate_y, 0.0, 1.0, 0.0);
     
     glRotatef(angle2, 1.0, 0.0, 0.0);
     glRotatef(angle, 0.0, 1.0, 0.0);
-    glEnable(GL_LIGHT0);
+    
     glPushMatrix();
     glTranslatef(-0.5, 0, -0.5);
     Triangle buf = Triangle();
