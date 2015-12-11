@@ -179,6 +179,7 @@ void init(void)
     glLightfv(GL_LIGHT2, GL_POSITION, pos3);
     
     glLightfv(GL_LIGHT3, GL_POSITION, pos4);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
     //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     glEnable(GL_COLOR_MATERIAL);
@@ -214,6 +215,7 @@ void display(void)
     glPushMatrix();
     glTranslatef(-0.5, 0, -0.5);
     Triangle buf = Triangle();
+    Triple vbuf = Triple();
     vector<double> vertex;
     glBegin(GL_TRIANGLES);
     int num = 0;
@@ -226,6 +228,8 @@ void display(void)
         //glColor3f((float)colors[vertex[0]][vertex[2]].getRed(), (float)colors[vertex[0]][vertex[2]].getGreen(), (float)colors[vertex[0]][vertex[2]].getBlue());
         //cout << buf.getColor().at(0).getRed() << ' '<< buf.getColor().at(0).getGreen() << ' ' << buf.getColor().at(0).getBlue()<< '\n';
         glColor3f(buf.getColor().at(0).getRed(), buf.getColor().at(0).getGreen(), buf.getColor().at(0).getBlue());
+        vbuf = normals[vertex[0]][vertex[2]];
+        glNormal3f(vbuf.getX(), vbuf.getHeight(), vbuf.getZ());
         glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
             
         vertex = buf.getVertex(1);
@@ -234,6 +238,8 @@ void display(void)
         
         //glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
         glColor3f(buf.getColor().at(1).getRed(), buf.getColor().at(1).getGreen(), buf.getColor().at(1).getBlue());
+        vbuf = normals[vertex[0]][vertex[2]];
+        glNormal3f(vbuf.getX(), vbuf.getHeight(), vbuf.getZ());
         glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
             
         vertex = buf.getVertex(2);
@@ -241,6 +247,8 @@ void display(void)
         //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
         //glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
         glColor3f(buf.getColor().at(2).getRed(), buf.getColor().at(2).getGreen(), buf.getColor().at(2).getBlue());
+        vbuf = normals[vertex[0]][vertex[2]];
+        glNormal3f(vbuf.getX(), vbuf.getHeight(), vbuf.getZ());
         glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
         num ++;
     }
