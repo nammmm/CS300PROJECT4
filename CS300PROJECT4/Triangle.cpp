@@ -1,57 +1,78 @@
-//
-//  Triangle.cpp
-//  CS300PROJECT4
-//
-//  Created by Pratistha Bhandari on 12/1/15.
-//  Copyright © 2015 The College of Wooster. All rights reserved.
-//
-#include "Triangle.h"
-Triangle::Triangle (int i0, int j0, int i1, int j1, int i2, int j2) {
-    i[0] = i0;
-    i[1] = i1;
-    i[2] = i2;
-    j[0] = j0;
-    j[1] = j1;
-    j[2] = j2;
-    color.resize(3);
-}
-Triangle::Triangle(){}
-vector<RGB> Triangle::getColor()
+/********************************************************************
+ *  Triple.cpp
+ *
+ *  Data representation of a point or vector in space. Functions of
+ *  various mathematical operations are provided.
+ *
+ ********************************************************************/
+
+#include "Triple.h"
+#include <cmath>
+
+Triple::Triple(double x, double y, double z)
 {
-    return color;
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
-void Triangle::setColor(vector<RGB> c)
+Triple::Triple(){};
+
+Triple Triple::add(Triple t)
 {
-    color = c;
+    return Triple(x + t.x, y + t.y, z + t.z);
 }
 
-RGB Triangle::getAvgColor()
+Triple Triple::subtract(Triple t)
 {
-    return avgColor;
+    return Triple(x - t.x, y - t.y, z - t.z);
 }
 
-void Triangle::setAvgColor(RGB c)
+Triple Triple::cross(Triple t)
 {
-    avgColor = c;
+    return Triple(y * t.z - z * t.y, z * t.x - x * t.z, x * t.y - y * t.x);
 }
 
-Triple Triangle::getNormal()
+double Triple::dot(Triple t)
 {
-    return n;
+    return x * t.x + y * t.y + z * t.z;
 }
 
-void Triangle::setNormal(Triple norm)
+double Triple::length2()
 {
-    n = norm;
+    return dot(*this);
 }
 
-vector<double> Triangle::getVertex(int num)
+Triple Triple::normalize()
 {
-    vector<double> buf;
-    buf.resize(3);
-    buf[0] = i[num];
-    buf[1] = 0;
-    buf[2] = j[num];
-    return buf;
+    return scale(1.0 / sqrt(length2()));
+}
+
+Triple Triple::scale(double scale)
+{
+    return Triple(x * scale, y * scale, z * scale);
+}
+
+double Triple::getHeight()
+{
+    return y;
+}
+
+double Triple::getX()
+{
+    return x;
+}
+
+double Triple::getZ()
+{
+    return z;
+}
+
+std::tuple<double, double, double, double> Triple::testNorm(Triple vec)
+{
+    double tX = vec.normalize().getX();
+    double tY = vec.normalize().getHeight();
+    double tZ = vec.normalize().getZ();
+    double length = pow(tX, 2) + pow(tY, 2) + pow(tZ, 2);
+    return std::make_tuple(vec.getX(), vec.getHeight(), vec.getZ(), length);
 }
