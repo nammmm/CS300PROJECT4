@@ -22,6 +22,8 @@ public:
     Triple normalize();
     Triple scale(double scale);
     double getHeight();
+    double getX();
+    double getZ();
 private:
     double x, y, z;
 };

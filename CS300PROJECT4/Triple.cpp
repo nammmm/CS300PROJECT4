@@ -57,3 +57,13 @@ double Triple::getHeight()
 {
     return y;
 }
+
+double Triple::getX()
+{
+    return x;
+}
+
+double Triple::getZ()
+{
+    return z;
+}

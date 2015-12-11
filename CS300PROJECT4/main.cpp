@@ -77,7 +77,7 @@ void constructTerrainGrid()
 
     for (int i = 0; i < steps + 1; i++)
         colors[i].resize(steps+1);
-    for (int i = 0; i <= steps; ++ i) {
+    for (int i = 0; i <= steps; i++) {
         for (int j = 0; j <= steps; ++ j) {
             double x = 1.0 * i / steps, z = 1.0 * j / steps;
             double altitude = terrain.getAltitude (x, z);
@@ -95,8 +95,8 @@ void constructTriangles()
     triangles.resize(numTriangles);
     cout << "Num of Triangles: " << numTriangles << '\n';
     int triangle = 0;
-    for (int i = 0; i < steps; ++ i) {
-        for (int j = 0; j < steps; ++ j) {
+    for (int i = 0; i < steps; i++) {
+        for (int j = 0; j < steps; j++) {
             triangles[triangle ++] = Triangle (i, j, i + 1, j, i, j + 1);
             triangles[triangle ++] = Triangle (i + 1, j, i + 1, j + 1, i, j + 1);
         }
@@ -108,41 +108,50 @@ void surfaceNormal()
     // Initialize every vector on every vertex to be (0,0,0)
     for (int i = 0; i < steps+1; i++)
         normals[i].resize(steps+1);
-    for (int i = 0; i < steps+1; ++i)
-        for (int j = 0; j < steps+1; ++j)
+    for (int i = 0; i < steps+1; i++)
+        for (int j = 0; j < steps+1; j++)
         {
             normals[i][j] = Triple(0.0, 0.0, 0.0);
         }
     /* compute triangle normals and vertex averaged normals */
-    for (int i = 0; i < triangles.size(); ++i)
+    for (int i = 0; i < triangles.size(); i++)
     {
-        Triple v0 = map[triangles[i].getVertex(0).at(0)][triangles[i].getVertex(0).at(1)],
-        v1 = map[triangles[i].getVertex(1).at(0)][triangles[i].getVertex(1).at(1)],
-        v2 = map[triangles[i].getVertex(2).at(0)][triangles[i].getVertex(2).at(1)];
+        Triple v0 = map[triangles[i].getVertex(0).at(0)][triangles[i].getVertex(0).at(2)],
+        v1 = map[triangles[i].getVertex(1).at(0)][triangles[i].getVertex(1).at(2)],
+        v2 = map[triangles[i].getVertex(2).at(0)][triangles[i].getVertex(2).at(2)];
         Triple normal = v0.subtract (v1).cross (v2.subtract (v1)).normalize ();
+        //cout << "Num " << i << ' '<< normal.getX() << ' '<< normal.getHeight() << ' '<< normal.getZ() << '\n';
         triangles[i].setNormal(normal);
-        for (int j = 0; j < 3; ++j) {
-            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)] =
-            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(1)].add(normal);
+        for (int j = 0; j < 3; j++) {
+            normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(2)] = normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(2)].add(normal);
         }
     }
     /* compute vertex colors and triangle average colors */
     Triple sunVect = Triple(sun[0], sun[1], sun[2]);
-    for (int i = 0; i < triangles.size(); ++i) {
+    for (int i = 0; i < triangles.size(); i++) {
         RGB avg = RGB (0.0, 0.0, 0.0);
-        for (int j = 0; j < 3; ++j) {
+        vector<RGB> c(3);
+        for (int j = 0; j < 3; j++) {
             int k = triangles[i].getVertex(j).at(0), l = triangles[i].getVertex(j).at(2);
             Triple vertex = map[k][l];
             RGB color = colors[k][l];
+            //cout << "Original Color: "<< k << ' '<< l << ' '<<color.getRed() << ' '<< color.getGreen()<<' '<< color.getBlue() << '\n';
             Triple normal = normals[k][l].normalize();
             Triple light = vertex.subtract(sunVect);
             double distance2 = light.length2();
             double dot = light.normalize().dot(normal);
-            double lighting = ambient + diffuse * ((dot < 0.0) ? - dot : 0.0) / distance2;
+            double lighting;
+            if (dot < 0.0)
+                lighting = ambient;
+            else
+                lighting = ambient - diffuse * dot/distance2;
+            cout << "lighting " << lighting << '\n';
             color = color.scale(lighting);
-            triangles[i].getColor().at(j) = color;
+            //cout << "After lighting Color: "<< color.getRed() << ' '<< color.getGreen()<<' '<< color.getBlue() << '\n';
+            c[j] = color;
             avg = avg.add(color);
         }
+        triangles[i].setColor(c);
         triangles[i].getAvgColor() = avg.scale(1.0 / 3.0);
     }
 }
@@ -158,21 +167,17 @@ void init(void)
     
     // Initialize the light.
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    
     glLightfv(GL_LIGHT0, GL_POSITION, sun);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     glEnable(GL_COLOR_MATERIAL);
     constructTerrainGrid();
     constructTriangles();
     surfaceNormal();
-    
-//    for (int i = 0; i <= steps; ++ i) {
-//        for (int j = 0; j <= steps; ++ j) {
-//            cout << i << ' '<< j << ' '<< map[i][j].getHeight()<< '\n';
-//            
-//        }
-//    }
+//    for (int i = 0; i < steps+1; i++)
+//        for (int j = 0; j < steps+1; j++)
+//            cout << normals[i][j].getX() << ' '<< normals[i][j].getHeight()<<' '<< normals[i][j].getZ() << ' '<<normals[i][j].normalize().length2()<<'\n';
     glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
     glEnable(GL_DEPTH_TEST);
 }
@@ -190,8 +195,9 @@ void display(void)
     
     glRotatef(angle2, 1.0, 0.0, 0.0);
     glRotatef(angle, 0.0, 1.0, 0.0);
-    
+    glEnable(GL_LIGHT0);
     glPushMatrix();
+    glTranslatef(-0.5, 0, -0.5);
     Triangle buf = Triangle();
     vector<double> vertex;
     glBegin(GL_TRIANGLES);
@@ -203,13 +209,14 @@ void display(void)
         vertex[1] = map[vertex[0]][vertex[2]].getHeight();
         //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
         //glColor3f((float)colors[vertex[0]][vertex[2]].getRed(), (float)colors[vertex[0]][vertex[2]].getGreen(), (float)colors[vertex[0]][vertex[2]].getBlue());
-        //cout << colors[vertex[0]][vertex[2]].getRed() << ' '<< colors[vertex[0]][vertex[2]].getGreen() << ' ' << colors[vertex[0]][vertex[2]].getBlue()<< '\n';
+        //cout << buf.getColor().at(0).getRed() << ' '<< buf.getColor().at(0).getGreen() << ' ' << buf.getColor().at(0).getBlue()<< '\n';
         glColor3f(buf.getColor().at(0).getRed(), buf.getColor().at(0).getGreen(), buf.getColor().at(0).getBlue());
         glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
             
         vertex = buf.getVertex(1);
         vertex[1] = map[vertex[0]][vertex[2]].getHeight();
         //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
+        
         //glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
         glColor3f(buf.getColor().at(1).getRed(), buf.getColor().at(1).getGreen(), buf.getColor().at(1).getBlue());
         glVertex3f(vertex[0]/steps, vertex[1], vertex[2]/steps);
