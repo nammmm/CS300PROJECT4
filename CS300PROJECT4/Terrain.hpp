@@ -1,9 +1,5 @@
 //
 //  Terrain.hpp
-//  CS300PROJECT4
-//
-//  Created by Xiangyu on 12/1/15.
-//  Copyright © 2015 The College of Wooster. All rights reserved.
 //
 
 #ifndef Terrain_hpp

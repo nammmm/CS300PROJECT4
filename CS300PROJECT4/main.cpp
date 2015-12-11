@@ -1,14 +1,17 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name: Nan Jiang, Pratistha Bhandari, Xiangyu Li
  * Assignment: Project 4
- * Title: ---
+ * Title: Procedural Terrain Generation Using Diamond Square Algorithm
  * Course: CS 300
  * Semester: Fall 2015
  * Instructor: D. Byrnes
- * Date: ---
- * Sources consulted: Lecture notes, course book, and stack overflow.
- * Program description: ---
- * Instructions: ---
+ * Date: 12/11/15
+ * Sources consulted: Tutorial provided along with the project description, lecture notes, 
+                      course book, and stack overflow.
+ * Program description: This program creates a fractal generated terrain using the diamond- 
+                        square algorithm.
+ * Instructions: 'esc' to exit the application. The readMe.txt file contains all the necessary 
+                 information to run the application.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <cmath>
@@ -43,11 +46,11 @@ const GLint win_width = 500;                    // window dimensions
 const GLint win_height = 500;
 FractalTerrain terrain = FractalTerrain(5, 0.6);
 
-int lod = 5;
+int lod = 5; //level of detail
 int steps = 1 << lod;
-vector<Triangle> triangles(steps * steps * 2);
-vector<vector<Triple>> map(steps+1);
-vector<vector<RGB>> colors(steps+1);
+vector<Triangle> triangles(steps * steps * 2); //stores the triangles in a vector
+vector<vector<Triple>> map(steps+1); //stores surface normals in a vector
+vector<vector<RGB>> colors(steps+1); //colors of the points
 
 // Normal and lighting
 double ambient = .4;
@@ -72,9 +75,10 @@ static GLfloat angle = -150;   /* in degrees */
 static GLfloat angle2 = 30;   /* in degrees */
 static int moving = 0, startx=0, starty=0;
 
+//creates a grid for the terrain to sit on
 void constructTerrainGrid()
 {
-    double exaggeration = .7;
+    double exaggeration = .7; //controls the level of exageration of the terrain
     
     for (int i = 0; i < steps + 1; i++)
         map[i].resize(steps + 1);
@@ -85,14 +89,13 @@ void constructTerrainGrid()
         for (int j = 0; j <= steps; ++ j) {
             double x = 1.0 * i / steps, z = 1.0 * j / steps;
             double altitude = terrain.getAltitude (x, z);
-            //cout << i << ' '<< j << ' '<< altitude<< '\n';
             map[i][j] = Triple(x, altitude * exaggeration, z);
             colors[i][j] = terrain.getColor(x, z);
-            
         }
     }
 }
 
+//creates two triangles for each square in the grid
 void constructTriangles()
 {
     int numTriangles = (steps * steps * 2);
@@ -107,6 +110,7 @@ void constructTriangles()
     }
 }
 
+//this function calculates the surface normals for the terrain
 void surfaceNormal()
 {
     // Initialize every vector on every vertex to be (0,0,0)
@@ -124,7 +128,6 @@ void surfaceNormal()
         v1 = map[triangles[i].getVertex(1).at(0)][triangles[i].getVertex(1).at(2)],
         v2 = map[triangles[i].getVertex(2).at(0)][triangles[i].getVertex(2).at(2)];
         Triple normal = v0.subtract (v1).cross (v2.subtract (v1)).normalize ();
-        //cout << "Num " << i << ' '<< normal.getX() << ' '<< normal.getHeight() << ' '<< normal.getZ() << '\n';
         triangles[i].setNormal(normal);
         for (int j = 0; j < 3; j++) {
             normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(2)] = normals[triangles[i].getVertex(j).at(0)][triangles[i].getVertex(j).at(2)].add(normal);
@@ -139,7 +142,6 @@ void surfaceNormal()
             int k = triangles[i].getVertex(j).at(0), l = triangles[i].getVertex(j).at(2);
             Triple vertex = map[k][l];
             RGB color = colors[k][l];
-            //cout << "Original Color: "<< k << ' '<< l << ' '<<color.getRed() << ' '<< color.getGreen()<<' '<< color.getBlue() << '\n';
             Triple normal = normals[k][l].normalize();
             Triple light = vertex.subtract(sunVect);
             double distance2 = light.length2();
@@ -151,7 +153,6 @@ void surfaceNormal()
                 lighting = ambient - diffuse * dot/distance2;
             cout << "lighting " << lighting << '\n';
             color = color.scale(lighting);
-            //cout << "After lighting Color: "<< color.getRed() << ' '<< color.getGreen()<<' '<< color.getBlue() << '\n';
             c[j] = color;
             avg = avg.add(color);
         }
@@ -163,7 +164,7 @@ void surfaceNormal()
 // Initialize OpenGL graphics
 void init(void)
 {
-    glClearColor (0.0, 0.0, 0.0, 0.0);                  // Black
+    glClearColor (0.0, 0.0, 0.0, 0.0); // Black
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho (-10.0, 10.0, -10.0,
@@ -180,35 +181,33 @@ void init(void)
     
     glLightfv(GL_LIGHT3, GL_POSITION, pos4);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-    //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
     glEnable(GL_LIGHT2);
     glEnable(GL_LIGHT3);
-    constructTerrainGrid();
-    constructTriangles();
-    surfaceNormal();
-//    for (int i = 0; i < steps+1; i++)
-//        for (int j = 0; j < steps+1; j++)
-//            cout << normals[i][j].getX() << ' '<< normals[i][j].getHeight()<<' '<< normals[i][j].getZ() << ' '<<normals[i][j].normalize().length2()<<'\n';
-    glShadeModel (GL_SMOOTH);                           // OpenGL shade model is set to GL_SMOOTH
-    glEnable(GL_DEPTH_TEST);
+    constructTerrainGrid(); //construct terrain grid here
+    constructTriangles(); //construct triangles here
+    surfaceNormal(); //calculate surface normals here
+    glShadeModel (GL_SMOOTH);  // OpenGL shade model is set to GL_SMOOTH
+    glEnable(GL_DEPTH_TEST); //depth test enabled
 }
 
-// Display
+// The display function
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
+    //translation
     glTranslatef(trans_x, trans_y, trans_z);
     
+    //roation using glut special keys
     glRotatef(rotate_x, 1.0, 0.0, 0.0 );
     glRotatef(rotate_y, 0.0, 1.0, 0.0);
     
+    //rotation for trackball
     glRotatef(angle2, 1.0, 0.0, 0.0);
     glRotatef(angle, 0.0, 1.0, 0.0);
     
@@ -224,9 +223,6 @@ void display(void)
         buf = triangles[num];
         vertex = buf.getVertex(0);
         vertex[1] = map[vertex[0]][vertex[2]].getHeight();
-        //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
-        //glColor3f((float)colors[vertex[0]][vertex[2]].getRed(), (float)colors[vertex[0]][vertex[2]].getGreen(), (float)colors[vertex[0]][vertex[2]].getBlue());
-        //cout << buf.getColor().at(0).getRed() << ' '<< buf.getColor().at(0).getGreen() << ' ' << buf.getColor().at(0).getBlue()<< '\n';
         glColor3f(buf.getColor().at(0).getRed(), buf.getColor().at(0).getGreen(), buf.getColor().at(0).getBlue());
         vbuf = normals[vertex[0]][vertex[2]];
         glNormal3f(vbuf.getX(), vbuf.getHeight(), vbuf.getZ());
@@ -234,9 +230,6 @@ void display(void)
             
         vertex = buf.getVertex(1);
         vertex[1] = map[vertex[0]][vertex[2]].getHeight();
-        //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
-        
-        //glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
         glColor3f(buf.getColor().at(1).getRed(), buf.getColor().at(1).getGreen(), buf.getColor().at(1).getBlue());
         vbuf = normals[vertex[0]][vertex[2]];
         glNormal3f(vbuf.getX(), vbuf.getHeight(), vbuf.getZ());
@@ -244,8 +237,6 @@ void display(void)
             
         vertex = buf.getVertex(2);
         vertex[1] = map[vertex[0]][vertex[2]].getHeight();
-        //cout << vertex[0] << ' '<< vertex[1] << ' '<< vertex[2] << '\n';
-        //glColor3f(colors[vertex[0]][vertex[2]].getRed(), colors[vertex[0]][vertex[2]].getGreen(), colors[vertex[0]][vertex[2]].getBlue());
         glColor3f(buf.getColor().at(2).getRed(), buf.getColor().at(2).getGreen(), buf.getColor().at(2).getBlue());
         vbuf = normals[vertex[0]][vertex[2]];
         glNormal3f(vbuf.getX(), vbuf.getHeight(), vbuf.getZ());
@@ -257,8 +248,8 @@ void display(void)
     glutSwapBuffers();
 }
 
-static void
-mouse(int button, int state, int x, int y)
+//mouse movements for the trackball
+static void mouse(int button, int state, int x, int y)
 {
     /* Rotate the scene with the left mouse button. */
     if (button == GLUT_LEFT_BUTTON) {
@@ -273,9 +264,8 @@ mouse(int button, int state, int x, int y)
     }
 }
 
-/* ARGSUSED1 */
-static void
-motion(int x, int y)
+//motion of the mouse
+static void motion(int x, int y)
 {
     if (moving) {
         angle = (angle + (x - startx));
@@ -286,7 +276,7 @@ motion(int x, int y)
     }
 }
 
-// Reshape
+// Reshape funtion that maintains aspect ratio
 void reshape (int w, int h)
 {
     glViewport (0, 0, (GLsizei) w, (GLsizei) h);
@@ -302,18 +292,17 @@ void reshape (int w, int h)
     glClearColor (0.0, 0.0, 0.0, 0.0);
 }
 
-// Idle
+//idle function keeps calling events when there are no other events in the event queue
 void idle(void)
 {
-    // Add code
     glutPostRedisplay();
 }
 
-// Keyboard
+// Keyboard callback function
 void keyboard(unsigned char key, int x, int y)
 {
     switch (key) {
-        case 27:
+        case 27: //exit the application when 'esc' is pressed
             exit(0);
             break;
         default:
@@ -335,6 +324,8 @@ void specialKeys( int key, int x, int y )
     
     glutPostRedisplay();
 }
+
+//the main function
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);

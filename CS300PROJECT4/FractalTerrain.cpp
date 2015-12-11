@@ -1,10 +1,11 @@
-//
-//  Terrain.cpp
-//  CS300PROJECT4
-//
-//  Created by Xiangyu on 12/1/15.
-//  Copyright © 2015 The College of Wooster. All rights reserved.
-//
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * FractalTerrain.cpp
+ *
+ * Implements the fractal terrain map using the diamond square algorithm. First, an initial 
+ * random terrain is generated. Then additional random details recursively mimic the structure
+ * of the whole.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "Terrain.hpp"
 #include <iostream>

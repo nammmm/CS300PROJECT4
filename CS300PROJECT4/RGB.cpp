@@ -1,10 +1,11 @@
-//
-//  RGB.cpp
-//  CS300PROJECT4
-//
-//  Created by Pratistha Bhandari on 12/1/15.
-//  Copyright © 2015 The College of Wooster. All rights reserved.
-//
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* RGB.cpp
+*
+* RGB class contains the functions that describe the color of the terrain. Functions that
+* carry out color arithmetic and convert a floating-point color to packed-integer format are 
+* in this class. add, subtract, scale, toInt, and toRGB are the RGB class functions.
+*
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <stdio.h>
 #include "RGB.h"

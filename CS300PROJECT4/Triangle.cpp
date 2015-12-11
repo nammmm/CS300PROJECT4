@@ -1,10 +1,11 @@
-//
-//  Triangle.cpp
-//  CS300PROJECT4
-//
-//  Created by Pratistha Bhandari on 12/1/15.
-//  Copyright © 2015 The College of Wooster. All rights reserved.
-//
+/********************************************************************
+ * Triple.cpp
+ *
+ * Stores each vertex as an index (i, j) into the grid points of the terrain.
+ * It also stores normal and color information of the terrain.
+ *
+ ********************************************************************/
+
 #include "Triangle.h"
 Triangle::Triangle (int i0, int j0, int i1, int j1, int i2, int j2) {
     i[0] = i0;

@@ -1,5 +1,5 @@
 /********************************************************************
- *  Triple.cpp
+ * Triple.cpp
  *
  *  Data representation of a point or vector in space. Functions of
  *  various mathematical operations are provided.
