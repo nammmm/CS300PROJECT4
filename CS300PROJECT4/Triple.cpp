@@ -57,3 +57,22 @@ double Triple::getHeight()
 {
     return y;
 }
+
+double Triple::getX()
+{
+    return x;
+}
+
+double Triple::getZ()
+{
+    return z;
+}
+
+std::tuple<double, double, double, double> Triple::testNorm(Triple vec)
+{
+    double tX = vec.normalize().getX();
+    double tY = vec.normalize().getHeight();
+    double tZ = vec.normalize().getZ();
+    double length = pow(tX, 2) + pow(tY, 2) + pow(tZ, 2);
+    return std::make_tuple(vec.getX(), vec.getHeight(), vec.getZ(), length);
+}
