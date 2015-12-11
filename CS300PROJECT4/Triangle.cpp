@@ -1,78 +1,57 @@
-/********************************************************************
- *  Triple.cpp
- *
- *  Data representation of a point or vector in space. Functions of
- *  various mathematical operations are provided.
- *
- ********************************************************************/
-
-#include "Triple.h"
-#include <cmath>
-
-Triple::Triple(double x, double y, double z)
+//
+//  Triangle.cpp
+//  CS300PROJECT4
+//
+//  Created by Pratistha Bhandari on 12/1/15.
+//  Copyright © 2015 The College of Wooster. All rights reserved.
+//
+#include "Triangle.h"
+Triangle::Triangle (int i0, int j0, int i1, int j1, int i2, int j2) {
+    i[0] = i0;
+    i[1] = i1;
+    i[2] = i2;
+    j[0] = j0;
+    j[1] = j1;
+    j[2] = j2;
+    color.resize(3);
+}
+Triangle::Triangle(){}
+vector<RGB> Triangle::getColor()
 {
-    this->x = x;
-    this->y = y;
-    this->z = z;
+    return color;
 }
 
-Triple::Triple(){};
-
-Triple Triple::add(Triple t)
+void Triangle::setColor(vector<RGB> c)
 {
-    return Triple(x + t.x, y + t.y, z + t.z);
+    color = c;
 }
 
-Triple Triple::subtract(Triple t)
+RGB Triangle::getAvgColor()
 {
-    return Triple(x - t.x, y - t.y, z - t.z);
+    return avgColor;
 }
 
-Triple Triple::cross(Triple t)
+void Triangle::setAvgColor(RGB c)
 {
-    return Triple(y * t.z - z * t.y, z * t.x - x * t.z, x * t.y - y * t.x);
+    avgColor = c;
 }
 
-double Triple::dot(Triple t)
+Triple Triangle::getNormal()
 {
-    return x * t.x + y * t.y + z * t.z;
+    return n;
 }
 
-double Triple::length2()
+void Triangle::setNormal(Triple norm)
 {
-    return dot(*this);
+    n = norm;
 }
 
-Triple Triple::normalize()
+vector<double> Triangle::getVertex(int num)
 {
-    return scale(1.0 / sqrt(length2()));
-}
-
-Triple Triple::scale(double scale)
-{
-    return Triple(x * scale, y * scale, z * scale);
-}
-
-double Triple::getHeight()
-{
-    return y;
-}
-
-double Triple::getX()
-{
-    return x;
-}
-
-double Triple::getZ()
-{
-    return z;
-}
-
-std::tuple<double, double, double, double> Triple::testNorm(Triple vec)
-{
-    double tX = vec.normalize().getX();
-    double tY = vec.normalize().getHeight();
-    double tZ = vec.normalize().getZ();
-    double length = pow(tX, 2) + pow(tY, 2) + pow(tZ, 2);
-    return std::make_tuple(vec.getX(), vec.getHeight(), vec.getZ(), length);
+    vector<double> buf;
+    buf.resize(3);
+    buf[0] = i[num];
+    buf[1] = 0;
+    buf[2] = j[num];
+    return buf;
 }
