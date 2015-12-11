@@ -9,7 +9,9 @@
 #ifndef Triple_h
 #define Triple_h
 
-#include <tuple>
+#include <iostream>
+
+using namespace std;
 
 class Triple
 {
@@ -27,6 +29,7 @@ public:
     double getX();
     double getZ();
     static double testNorm(Triple vec);
+    friend ostream& operator<<(ostream& os, const Triple& vec);
 private:
     double x, y, z;
 };
