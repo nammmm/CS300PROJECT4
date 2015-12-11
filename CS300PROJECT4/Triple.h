@@ -9,6 +9,8 @@
 #ifndef Triple_h
 #define Triple_h
 
+#include <tuple>
+
 class Triple
 {
 public:

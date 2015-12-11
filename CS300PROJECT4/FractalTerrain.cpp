@@ -54,14 +54,12 @@ void FractalTerrain::square(int x, int y, int side, double scale)
 }
 double FractalTerrain::rnd()
 {
-    std::uniform_real_distribution<double> dist(0.0, 1.0);  //(min, max)
-    
-    //Mersenne Twister: Good quality random number generator
-    std::mt19937 rng;
-    //Initialize with non-deterministic seeds
-    rng.seed(std::random_device{}());
+    double buf = 2.0 * rand()/RAND_MAX- 1;
 
-    return 2.0 * rand()/RAND_MAX- 1;
+    if (buf == 0)
+        return rnd();
+    else
+        return buf;
 }
 FractalTerrain::FractalTerrain(int lod, double roughness)
 {
@@ -71,10 +69,12 @@ FractalTerrain::FractalTerrain(int lod, double roughness)
     terrain = new double*[divisions + 1];
     for (int i = 0; i < divisions+1; i++)
         terrain[i] = new double[divisions+1];
-    terrain[0][0] = rnd();
-    terrain[0][divisions] = rnd();
-    terrain[divisions][divisions] = rnd();
-    terrain[divisions][0] = rnd();
+    
+
+    terrain[0][0] = 0.1;
+    terrain[0][divisions] = 0.3;
+    terrain[divisions][divisions] = 0.5;
+    terrain[divisions][0] = 0.8;
     
     double rough = roughness;
     for (int i = 0; i < lod; i++)
