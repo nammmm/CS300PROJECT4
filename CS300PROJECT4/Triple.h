@@ -9,6 +9,8 @@
 #ifndef Triple_h
 #define Triple_h
 
+#include <tuple>
+
 class Triple
 {
 public:
@@ -22,6 +24,9 @@ public:
     Triple normalize();
     Triple scale(double scale);
     double getHeight();
+    double getX();
+    double getZ();
+    static std::tuple<double, double, double, double> testNorm(Triple vec);
 private:
     double x, y, z;
 };
