@@ -24,6 +24,8 @@ public:
     double getHeight();
     double getX();
     double getZ();
+    static double testNorm(Triple vec);
+    friend ostream& operator<<(ostream& os, const Triple& vec);
 private:
     double x, y, z;
 };

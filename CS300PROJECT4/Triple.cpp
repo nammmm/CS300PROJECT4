@@ -67,3 +67,15 @@ double Triple::getZ()
 {
     return z;
 }
+
+ostream& operator<<(ostream& os, const Triple& vec)
+{
+    os << "x: " << vec.x << "  y: " << vec.y << "  z: " << vec.z;
+    return os;
+}
+
+double Triple::testNorm(Triple vec)
+{
+    double length = pow(vec.normalize().getX(), 2) + pow(vec.normalize().getHeight(), 2) + pow(vec.normalize().getZ(), 2);
+    return (length == 1) ? length : 0;
+}
