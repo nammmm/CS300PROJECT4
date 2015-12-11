@@ -8,7 +8,8 @@
 
 #ifndef Triple_h
 #define Triple_h
-
+#include <iostream>
+using namespace std;
 class Triple
 {
 public:
