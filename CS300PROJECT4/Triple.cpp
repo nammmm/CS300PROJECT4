@@ -57,3 +57,19 @@ double Triple::getHeight()
 {
     return y;
 }
+
+double Triple::getX()
+{
+    return x;
+}
+
+double Triple::getZ()
+{
+    return z;
+}
+
+double Triple::testNorm(Triple vec)
+{
+    double length = pow(vec.normalize().getX(), 2) + pow(vec.normalize().getHeight(), 2) + pow(vec.normalize().getZ(), 2);
+    return (length == 1) ? length : 0;
+}

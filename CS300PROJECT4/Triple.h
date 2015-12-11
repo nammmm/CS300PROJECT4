@@ -22,6 +22,9 @@ public:
     Triple normalize();
     Triple scale(double scale);
     double getHeight();
+    double getX();
+    double getZ();
+    static double testNorm(Triple vec);
 private:
     double x, y, z;
 };
